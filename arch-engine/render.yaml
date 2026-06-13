@@ -1,0 +1,14 @@
+# Deployment config for Render (https://render.com) — a free way to host the app.
+# Render reads this file, installs the app, and runs it on a public URL.
+# You still set ANTHROPIC_API_KEY in the Render dashboard (it's a secret).
+services:
+  - type: web
+    name: arch-engine
+    runtime: python
+    rootDir: arch-engine
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false   # you paste this into the Render dashboard, not into git
