@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Arch · Statement Engine (preview)</title>
+  <!--
+    THIS IS A STATIC PREVIEW / MOCKUP.
+    It shows what the app looks like AFTER a statement has been processed,
+    using made-up sample numbers. Nothing here is live — there's no upload,
+    no server, and no API key needed. Just double-click to open it.
+    The real app is `app.py` + `static/index.html`.
+  -->
+  <style>
+    :root {
+      --bg: #0f1115; --panel: #171a21; --panel-2: #1e222b; --line: #2a2f3a;
+      --text: #e7e9ee; --muted: #9aa3b2; --accent: #d97a4e; --accent-soft: #2a1f19;
+      --good: #4ea36b; --radius: 14px;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.5; }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 80px; }
+    .banner { background: var(--accent-soft); color: var(--accent); border: 1px solid #3a2a20;
+      border-radius: 10px; padding: 10px 14px; font-size: 13px; margin-bottom: 26px; }
+    header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+    header .logo { font-weight: 700; font-size: 22px; letter-spacing: .5px; color: var(--accent); }
+    header .sub { color: var(--muted); font-size: 14px; }
+    h1 { font-size: 28px; margin: 18px 0 6px; font-weight: 650; }
+    .lede { color: var(--muted); margin: 0 0 28px; }
+    .drop { border: 1.5px dashed var(--line); border-radius: var(--radius); background: var(--panel-2);
+      padding: 30px 24px; text-align: center; }
+    .drop .icon { font-size: 30px; }
+    .drop .big { font-size: 16px; margin-top: 8px; }
+    .drop .small { color: var(--muted); font-size: 13px; margin-top: 4px; }
+    .drop .file { color: var(--accent); font-weight: 600; }
+    .row { display: flex; gap: 12px; align-items: center; margin-top: 18px; }
+    button { background: var(--accent); color: #fff; border: 0; border-radius: 10px; padding: 12px 20px;
+      font-size: 15px; font-weight: 600; font-family: var(--font); }
+    button.ghost { background: transparent; color: var(--muted); border: 1px solid var(--line); }
+    .status { margin-top: 22px; color: var(--muted); font-size: 14px; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-top: 26px; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+    .card .k { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .4px; }
+    .card .v { font-size: 20px; font-weight: 650; margin-top: 4px; }
+    .pill { display: inline-block; padding: 2px 10px; border-radius: 999px; background: var(--accent-soft);
+      color: var(--accent); font-size: 12px; font-weight: 600; }
+    .jsonhead { display: flex; justify-content: space-between; align-items: center; margin: 30px 0 8px; }
+    .jsonhead h2 { font-size: 15px; color: var(--muted); font-weight: 600; margin: 0; text-transform: uppercase; letter-spacing: .4px; }
+    pre { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; overflow: auto;
+      font-size: 13px; line-height: 1.55; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: #cdd3df; max-height: 480px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="banner">👀 Preview / mock-up — sample numbers, nothing live. The real app lets you drag in your own PDF.</div>
+    <header>
+      <span class="logo">ARCH</span>
+      <span class="sub">Statement Engine · milestone 1 (extract + structure)</span>
+    </header>
+    <h1>Statement &rarr; clean JSON</h1>
+    <p class="lede">Drop a merchant processing statement (PDF). We pull the text and tables,
+      then normalize it into structured data &mdash; works across processors (Fiserv, TSYS, Elavon, Paysafe&hellip;).</p>
+
+    <div class="drop">
+      <div class="icon">📄</div>
+      <div class="big">Selected: <span class="file">joes-diner-may-2024.pdf</span></div>
+      <div class="small">128 KB · click to change</div>
+    </div>
+
+    <div class="row">
+      <button>Process statement</button>
+      <button class="ghost">Clear</button>
+    </div>
+
+    <div class="status">Done · 1,184 chars extracted · model claude-opus-4-8</div>
+
+    <div class="cards">
+      <div class="card"><div class="k">Merchant</div><div class="v">Joe's Diner LLC</div></div>
+      <div class="card"><div class="k">Period</div><div class="v">05/01/2024 - 05/31/2024</div></div>
+      <div class="card"><div class="k">Total volume</div><div class="v">$128,450.12</div></div>
+      <div class="card"><div class="k">Transactions</div><div class="v">3,412</div></div>
+      <div class="card"><div class="k">Total fees</div><div class="v">$3,219.75</div></div>
+      <div class="card"><div class="k">Effective rate</div><div class="v">2.51%</div></div>
+      <div class="card"><div class="k">Pricing model</div><div class="v"><span class="pill">IC+</span></div></div>
+    </div>
+
+    <div class="jsonhead">
+      <h2>Structured JSON</h2>
+      <button class="ghost">Copy</button>
+    </div>
+    <pre>{
+  "merchant_name": "Joe's Diner LLC",
+  "statement_period": "05/01/2024 - 05/31/2024",
+  "total_volume": 128450.12,
+  "transaction_count": 3412,
+  "total_fees": 3219.75,
+  "interchange_fees": 2310.55,
+  "assessment_fees": 178.20,
+  "processor_markup": 642.00,
+  "fixed_fees": {
+    "pci": 19.95,
+    "monthly": 25.00,
+    "batch": 34.10,
+    "statement": 9.95,
+    "other": null
+  },
+  "current_model": "IC+",
+  "card_mix": null,
+  "notes": "Interchange-plus pricing; markup cleanly separable from interchange + assessments."
+}</pre>
+  </div>
+</body>
+</html>
