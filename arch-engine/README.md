@@ -3,8 +3,8 @@
 A local command-line tool that turns a merchant's credit-card processing
 statement (PDF) into an Arch proposal with their real numbers.
 
-**Current status: Milestone 1 — Extract + Structure.** Run a statement PDF
-through and get clean, structured JSON.
+**Current status: Milestone 1 — Extract + Structure.** Upload a statement PDF
+(local web app or CLI) and get clean, structured JSON.
 
 ## Pipeline
 
@@ -24,7 +24,20 @@ pip install -r requirements.txt
 cp .env.example .env        # then add your ANTHROPIC_API_KEY
 ```
 
-## Usage
+## Usage — web app (recommended)
+
+Run the local web app, then open it in your browser:
+
+```bash
+uvicorn app:app --reload
+# open http://127.0.0.1:8000
+```
+
+Drag a statement PDF onto the page (or click to choose) and hit **Process**.
+You'll get summary cards (merchant, volume, fees, effective rate, pricing model)
+plus the full structured JSON with a copy button.
+
+## Usage — CLI
 
 ```bash
 python main.py path/to/statement.pdf
